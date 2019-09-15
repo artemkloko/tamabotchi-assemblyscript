@@ -1,0 +1,1 @@
+export { Tamabotchi } from "./tamabotchi";

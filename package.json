@@ -2,7 +2,8 @@
   "name": "tamabotchi-assemblyscript",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "asp",
     "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate --debug",
@@ -13,14 +14,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^12.7.5",
-    "assemblyscript": "github:AssemblyScript/assemblyscript",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.6.3"
+    "assemblyscript": "github:AssemblyScript/assemblyscript"
   },
   "devDependencies": {
     "@as-pect/assembly": "^2.5.0",
     "@as-pect/cli": "^2.5.0",
-    "@as-pect/core": "^2.5.0"
+    "@as-pect/core": "^2.5.0",
+    "@types/node": "^12.7.5",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.3"
   }
 }

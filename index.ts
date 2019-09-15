@@ -1,16 +1,16 @@
 import { readFileSync } from "fs";
 import { instantiateBuffer } from "assemblyscript/lib/loader";
 import * as assembly from "./assembly";
-export { Tamabotchi } from "./assembly";
 
 const env = process.env.NODE_ENV || "dev";
+const path = /.ts$/.test(__filename) ? __dirname : __dirname + '/..'
 const wasm = env === "dev" ? "/build/optimized.wasm" : "/build/untouched.wasm";
-const file = readFileSync(__dirname + wasm);
+const file = readFileSync(path + wasm);
 const imports = {};
 const assemblyModule = instantiateBuffer<typeof assembly>(file, imports);
 
-class Tamabotchi {
-  tamabotchi: assembly.Tamabotchi;
+export class Tamabotchi {
+  private tamabotchi: assembly.Tamabotchi;
 
   constructor() {
     this.tamabotchi = new assemblyModule.Tamabotchi();
@@ -27,7 +27,3 @@ class Tamabotchi {
     return assemblyModule.__getString(result);
   }
 }
-
-Object.defineProperty(module, "exports", {
-  get: () => ({ Tamabotchi })
-});
