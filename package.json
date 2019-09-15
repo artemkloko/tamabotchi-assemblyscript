@@ -1,12 +1,10 @@
 {
-  "name": "tamabotchi-wasm-2",
+  "name": "tamabotchi-assemblyscript",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:assembly": "jest",
-    "test:wasm": "npm run asbuild:optimized && jest --config=jest.wasm.config.js",
-    "test": "npm run test:assembly && npm run test:wasm",
+    "test": "asp",
     "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --validate --debug",
     "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
@@ -15,11 +13,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/jest": "^24.0.18",
+    "@as-pect/assembly": "^2.5.0",
+    "@as-pect/cli": "^2.5.0",
+    "@as-pect/core": "^2.5.0",
     "@types/node": "^12.7.5",
     "assemblyscript": "github:AssemblyScript/assemblyscript",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.6.3"
   }

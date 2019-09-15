@@ -1,30 +1,31 @@
 import { readFileSync } from "fs";
 import { instantiateBuffer } from "assemblyscript/lib/loader";
+import * as assembly from "./assembly";
+export { Tamabotchi } from "./assembly";
 
-const file = readFileSync(__dirname + "/build/optimized.wasm");
+const file = readFileSync(__dirname + "/build/untouched.wasm");
 const imports = {};
-const assemblyModule = instantiateBuffer(file, imports);
+const assemblyModule = instantiateBuffer<typeof assembly>(file, imports);
 
-// alter all the exported functions for string usage
-Object.keys(assemblyModule).forEach(key => {
-  // keep the original
-  assemblyModule["_" + key] = assemblyModule[key];
-  assemblyModule[key] = (...args) => {
-    // if any of the given args is a string, allocate memory for it
-    args = args.map(arg =>
-      typeof arg === "string" ? assemblyModule.__allocString(arg) : arg
-    );
-    // execure the original function
-    const result = assemblyModule["_" + key](...args);
-    // if the result is instance of string, read it from memory
-    if (assemblyModule.__instanceof(result, 1)) {
-      return assemblyModule.__getString(result);
-    } else {
-      return result;
-    }
-  };
-});
+class Tamabotchi {
+  tamabotchi: assembly.Tamabotchi;
+
+  constructor() {
+    this.tamabotchi = new assemblyModule.Tamabotchi();
+  }
+
+  learn(sentence: string) {
+    const aSentence = assemblyModule.__allocString(sentence);
+    this.tamabotchi.learn.call(this.tamabotchi, aSentence);
+  }
+
+  reply(word: string): string {
+    const aWord = assemblyModule.__allocString(word);
+    const result = this.tamabotchi.reply.call(this.tamabotchi, aWord);
+    return assemblyModule.__getString(result);
+  }
+}
 
 Object.defineProperty(module, "exports", {
-  get: () => assemblyModule
+  get: () => ({ Tamabotchi })
 });
