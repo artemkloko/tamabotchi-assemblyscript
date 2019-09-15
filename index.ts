@@ -3,7 +3,9 @@ import { instantiateBuffer } from "assemblyscript/lib/loader";
 import * as assembly from "./assembly";
 export { Tamabotchi } from "./assembly";
 
-const file = readFileSync(__dirname + "/build/untouched.wasm");
+const env = process.env.NODE_ENV || "dev";
+const wasm = env === "dev" ? "/build/optimized.wasm" : "/build/untouched.wasm";
+const file = readFileSync(__dirname + wasm);
 const imports = {};
 const assemblyModule = instantiateBuffer<typeof assembly>(file, imports);
 
